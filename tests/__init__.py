@@ -1,1 +1,0 @@
-Item.all.append(self)
