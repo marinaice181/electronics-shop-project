@@ -13,7 +13,6 @@ if __name__ == '__main__':
     # Exception: Длина наименования товара превышает 10 символов.
 
     Item.instantiate_from_csv("../src/items.csv")  # создание объектов из данных файла
-    print(len(Item.all))
     """
     В списке должно лежать не 5 а 6 об. 
     """
@@ -21,7 +20,6 @@ if __name__ == '__main__':
 
 
     item1 = Item.all[1]
-    print(item1.name)
     assert item1.name == 'Смартфон'
 
     assert Item.string_to_number('5') == 5
