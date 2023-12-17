@@ -28,6 +28,16 @@ class Item:
     def __str__(self):
         return f'{self.__name}'
 
+    def __add__(self, other):
+        """
+        Сложение количества товаров из классов Item и Phone
+        (сложение по количеству товара в магазине)
+        """
+        if isinstance(other, Item):
+            return self.quantity + other.quantity
+        else:
+            raise TypeError()
+
 
     def calculate_total_price(self) -> float:
         """
@@ -43,11 +53,11 @@ class Item:
         return self.price
 
     @property
-    def get_name(self):
+    def name(self):
         return self.__name
 
-    @get_name.setter
-    def set_name(self, name):
+    @name.setter
+    def name(self, name):
         self.__name = name[:10]
 
     @classmethod
@@ -58,10 +68,7 @@ class Item:
                 name = i['name']
                 price = float(i['price'])
                 quantity = int(i['quantity'])
-                item = cls(None, None, None)
-                item.name = name
-                item.price = price
-                item.quantity = quantity
+                item = cls(name, price, quantity)
 
 
     @staticmethod
