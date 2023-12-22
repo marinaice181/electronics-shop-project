@@ -22,3 +22,4 @@ def test_KeyboardMixin():
     assert kb._language == "RU"
     kb.change_lang()
     assert kb._language == "EN"
+    kb.language = 'CH'
