@@ -1,33 +1,26 @@
 """Тесты с использованием pytest для модуля phone"""
 
+import pytest
 from src.phone import Phone
 from src.item import Item
 
 
-def test_phone():
-    """
-    Проверка всех данных
-    """
-    phone = Phone("test1", 120000, 5, 2)
-    assert phone.name == "test1"
-    assert phone.price == 120000
-    assert phone.quantity == 5
-    assert phone.number_of_sim == 2
+def test_methods():
+    phone1 = Phone("iPhone 14", 120_000, 5, 2)
+    assert str(phone1) == 'iPhone 14'
+    assert repr(phone1) == "Phone('iPhone 14', 120000, 5, 2)"
 
 
-def test_number_of_sim_setter():
-    """
-    Проверка на изменение количества сим карт
-    """
-    phone = Phone("test1", 120000, 5, 2)
-    phone.number_of_sim = 2
-    assert phone.number_of_sim == 2
+def test_add():
+    item1 = Item("Смартфон", 10000, 20)
+    phone1 = Phone("iPhone 14", 120_000, 5, 2)
+    assert item1 + phone1 == 25
+    assert phone1 + phone1 == 10
 
 
-def test_phone__error_number_of_sim():
-    """
-    Проверка на отрицательное и float количество сим карт
-    """
+def test_setter():
+    phone1 = Phone("iPhone 14", 120_000, 5, 2)
+    assert phone1.number_of_sim == 2
     with pytest.raises(ValueError):
-        phone = Phone("test1", 699.99, 10, -2)
-        phone1 = Phone("test2", 699.99, 10, 2.7)
+        phone1.number_of_sim = 0
+        assert ValueError

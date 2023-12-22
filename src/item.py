@@ -1,5 +1,5 @@
 import csv
-import os
+#import os
 
 
 class Item:
@@ -19,7 +19,7 @@ class Item:
         self.__name = name
         self.price = price
         self.quantity = quantity
-        Item.all.append(self)
+        #Item.all.append(self)
 
 
     def __repr__(self):
@@ -69,6 +69,9 @@ class Item:
                 price = float(i['price'])
                 quantity = int(i['quantity'])
                 item = cls(name, price, quantity)
+                item.name = name
+                item.price = price
+                item.quantity = quantity
 
 
     @staticmethod
