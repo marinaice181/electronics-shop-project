@@ -2,8 +2,20 @@ from src.item import Item
 
 
 class Phone(Item):
+    """
+    Дочерний класс от класса Item, представляющий телефоны
+    """
+    def __init__(self, name: str, price: float, quantity: int, number_of_sim: int) -> None:
+        """
+        Создание экземпляка класса
+        :param name: имя
+        :param price: цена за штуку
+        :param quantity: количество телефонов
+        :param number_of_sim: количество сим-карт
 
-    def __init__(self, name: str, price: float, quantity: int, number_of_sim: int):
+        взятие инициализации у родительского класса Item
+        проверка количества сим-карт
+        """
         super().__init__(name, price, quantity)
         self.__number_of_sim = number_of_sim
 
@@ -12,6 +24,10 @@ class Phone(Item):
 
     @property
     def number_of_sim(self):
+        """
+        Геттер количества сим-карт
+        :return:
+        """
         return self.__number_of_sim
 
     @number_of_sim.setter
