@@ -5,18 +5,12 @@ class InstantiateCSVError:
     pass
 
 
-class InstantiateCSVError(Exception):
-    def __init__(self, *args):
-        self.message = args[0] if args else 'Файл поврежден'
-
 class Item:
     """
     Класс для представления товара в магазине.
     """
     pay_rate = 1.0
     all = []
-
-
 
     def __init__(self, name: str, price: float, quantity: int) -> None:
         """
@@ -27,7 +21,6 @@ class Item:
         self.price = price
         self.quantity = quantity
         #Item.all.append(self)
-
 
     def __repr__(self):
         return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
@@ -44,7 +37,6 @@ class Item:
             return self.quantity + other.quantity
         else:
             raise TypeError()
-
 
     def calculate_total_price(self) -> float:
         """
