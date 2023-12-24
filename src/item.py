@@ -1,9 +1,9 @@
 import csv
+#import os
 
-
-class InstantiateCSVError:
-    pass
-
+class InstantiateCSVError(Exception):
+    def __init__(self, *args):
+        self.message = args[0] if args else 'Файл поврежден'
 
 class Item:
     """
@@ -12,67 +12,73 @@ class Item:
     pay_rate = 1.0
     all = []
 
+
+
     def __init__(self, name: str, price: float, quantity: int) -> None:
         """
-        Создание экземпляра класса item.
-
-        :param name: Название товара.
-        :param price: Цена за единицу товара.
-        :param quantity: Количество товара в магазине.
+        Создание экземпляра класса item
         """
+        super().__init__()
         self.__name = name
         self.price = price
         self.quantity = quantity
-        self.all.append(self)
+        #Item.all.append(self)
+
 
     def __repr__(self):
-        return f"Item('{self.name}', {self.price}, {self.quantity})"
+        return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
 
     def __str__(self):
-        return self.name
+        return f'{self.__name}'
 
-    @property
-    def name(self) -> str:
-        return self.__name
+    def __add__(self, other):
+        """
+        Сложение количества товаров из классов Item и Phone
+        (сложение по количеству товара в магазине)
+        """
+        if isinstance(other, Item):
+            return self.quantity + other.quantity
+        else:
+            raise TypeError()
 
-    @name.setter
-    def name(self, value: str):
-        if len(value) <= 10:
-            self.__name = value
 
     def calculate_total_price(self) -> float:
         """
-        Рассчитывает общую стоимость конкретного товара в магазине.
-
-        :return: Общая стоимость товара.
+        Общая стоимость товара
         """
-        return self.price * self.quantity
+        return self.price*self.quantity
 
-    def apply_discount(self) -> None:
+    def apply_discount(self) -> float:
         """
-        Применяет установленную скидку для конкретного товара.
+        Скидка на товар
         """
-        self.price *= self.pay_rate
+        self.price = self.price*self.pay_rate
+        return self.price
 
-    @staticmethod
-    def string_to_number(value: str):
-        return int(value)
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self, name):
+        self.__name = name[:10]
 
     @classmethod
-    def instantiate_from_csv(cls, filename='../src/items.cvs') -> str:
-        """
-        класс-метод, инициализирующий экземпляры класса `Item` данными из файла _src/items.csv_
-        """
+    def instantiate_from_csv(cls, path):
+
+        Item.all.clear()
         try:
-            with open(filename) as f:
-                reader = csv.DictReader(f)
-                cls.all.clear()
-                for row in reader:
-                    name = row['name']
-                    price = cls.string_to_number(row['price'])
-                    quantity = cls.string_to_number(row['quantity'])
-                    cls.all.append(cls(name, price, quantity))  # создаем экзмляры классы и кладем их в список
+            with open(path) as file:
+                file.readline()
+                try:
+                    for line in file:
+                        cls(*line.split(','))
+                except TypeError as err:
+                    raise InstantiateCSVError(f'Файл {path} поврежден') from err
         except FileNotFoundError:
-            return f"Отсутствует файл {filename}"
-        except InstantiateCSVError:
-            return f"Файл {filename} поврежден"
+            raise FileNotFoundError(f'Отсутствует файл {path}')
+            # print('FileNotFoundError: Отсутствует файл item.csv')
+
+    @staticmethod
+    def string_to_number(number: str) -> int:
+        return int(float(number))
