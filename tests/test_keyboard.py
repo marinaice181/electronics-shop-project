@@ -1,25 +1,22 @@
-from src.keyboard import Keyboard, KeyboardMixin
+import pytest
+
+from src.keyboard import Keyboard
 
 
-def test_change_lang():
-    kb = Keyboard('Test Keyboard', 900, 1)
+@pytest.fixture
+def kb():
+    return Keyboard('Dark Project KD87A', 9600, 5)
+
+
+def test_init(kb):
+    assert str(kb) == "Dark Project KD87A"
+    assert str(kb.language) == "EN"
+
+
+def test_lang(kb):
     kb.change_lang()
-    assert kb.language == 'RU'
-    kb.change_lang()
-    assert kb.language == 'EN'
-
-
-
-def test_str():
-    kb = Keyboard('Test Keyboard', 900, 1)
-    assert str(kb) == 'Test Keyboard'
-
-
-def test_KeyboardMixin():
-    kb = KeyboardMixin()
-    assert kb._language == 'EN'
-    kb.change_lang()
-    assert kb._language == "RU"
-    kb.change_lang()
-    assert kb._language == "EN"
-    kb.language = 'CH'
+    assert str(kb.language) == "RU"
+    kb.change_lang().change_lang()
+    assert str(kb.language) == "RU"
+    with pytest.raises(AttributeError):
+        kb.language = 'CH'
