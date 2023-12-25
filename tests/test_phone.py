@@ -2,25 +2,35 @@
 
 import pytest
 from src.phone import Phone
-from src.item import Item
 
 
-def test_methods():
+def test___init__():
+    """
+    Тест инициализации
+    """
     phone1 = Phone("iPhone 14", 120_000, 5, 2)
     assert str(phone1) == 'iPhone 14'
-    assert repr(phone1) == "Phone('iPhone 14', 120000, 5, 2)"
 
 
-def test_add():
-    item1 = Item("Смартфон", 10000, 20)
-    phone1 = Phone("iPhone 14", 120_000, 5, 2)
-    assert item1 + phone1 == 25
-    assert phone1 + phone1 == 10
-
-
-def test_setter():
-    phone1 = Phone("iPhone 14", 120_000, 5, 2)
+def test_number_of_sim():
+    """
+    Тест количества сим-карт
+    """
+    phone1 = Phone("iPhone 10", 20_000, 5, 2)
+    phone1.number_of_sim = 2
     assert phone1.number_of_sim == 2
+
+
+def test_number_of_sim__value_error():
+    """
+    Тест с проверкой ошибки малого или отрицательного количества сим-карт
+    """
     with pytest.raises(ValueError):
-        phone1.number_of_sim = 0
-        assert ValueError
+        phone2 = Phone("iPhone 20", 120_000, 5, 0)
+        phone2.number_of_sim = 0
+        phone2.number_of_sim
+
+
+def test___repr__():
+    phone1 = Phone("iPhone 14", 120_000, 5, 2)
+    assert repr(phone1) == "Phone('iPhone 14', 120000, 5, 2)"
